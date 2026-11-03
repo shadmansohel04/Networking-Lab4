@@ -1,7 +1,7 @@
 //IFCONFIG
-(R14 CLARKSON)
+//(R14 CLARKSON)
 /sbin/ifconfig eth1 10.4.1.1 netmask 255.255.255.0 up
-(R16 APPLEBY)
+//(R16 APPLEBY)
 /sbin/ifconfig eth2 10.4.2.2 netmask 255.255.255.0 up
 
 //IPFORWARDING
@@ -11,12 +11,14 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 /sbin/ifconfig eth0 down
 
 //ETHERNET
-ETH0 DROPPED
-ETH1 (35) -> 38 (ETH1 R14)
-ETH2 (36) -> 43 (ETH0 R16)
+//ETH0 DROPPED
+//ETH1 (35) -> 38 (ETH1 R14)
+//ETH2 (36) -> 43 (ETH0 R16)
 
 //START ROUTING TABLE
-(R15)
+/sbin/route del default
+
+//(R15)
 /sbin/route add -host 10.4.4.2 gw 10.4.1.2 dev eth1
 
 //NETMASK ALL
