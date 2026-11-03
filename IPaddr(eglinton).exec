@@ -12,8 +12,8 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 
 //ETHERNET
 ETH0 DROPPED
-ETH1 (35) -> 38
-ETH2 (36) -> 43
+ETH1 (35) -> 38 (ETH1 R14)
+ETH2 (36) -> 43 (ETH0 R16)
 
 //START ROUTING TABLE
 (R15)
