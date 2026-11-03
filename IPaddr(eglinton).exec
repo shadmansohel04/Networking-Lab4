@@ -4,3 +4,6 @@
 
 //IPFORWARDING
 echo 1 > /proc/sys/net/ipv4/ip_forward
+
+//IFCONFIG ETH0 UNUSED
+/sbin/ifconfig eth0 down
