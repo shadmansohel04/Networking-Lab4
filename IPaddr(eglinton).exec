@@ -10,6 +10,11 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 //IFCONFIG ETH0 UNUSED
 /sbin/ifconfig eth0 down
 
+//ETHERNET
+ETH0 DROPPED
+ETH1 (35) -> 38
+ETH2 (36) -> 43
+
 //START ROUTING TABLE
 (R15)
 /sbin/route add -host 10.4.4.2 gw 10.4.1.2 dev eth1
