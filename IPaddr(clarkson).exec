@@ -1,1 +1,7 @@
+// R14
+/sbin/ifconfig eth0 10.4.4.1 netmask 255.255.255.0 up
+/sbin/ifconfig eth1 10.4.1.2 netmask 255.255.255.0 up
+/sbin/ifconfig eth2 10.1.5.2 netmask 255.255.255.0 up
 
+//IPFORWARDING
+echo 1 > /proc/sys/net/ipv4/ip_forward
