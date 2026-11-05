@@ -1,29 +1,29 @@
-//IFCONFIG
-//(R14 CLARKSON)
+#!/bin/bash
+
+# --- 1. INTERFACE CONFIGURATION (R13 Eglinton) ---
+# Connection to R14 (Clarkson): Subnet 10.4.1.0/24
 /sbin/ifconfig eth1 10.4.1.1 netmask 255.255.255.0 up
-//(R16 APPLEBY)
+
+# Connection to R16 (Appleby): Subnet 10.4.2.0/24
 /sbin/ifconfig eth2 10.4.2.2 netmask 255.255.255.0 up
 
-//IPFORWARDING
-echo 1 > /proc/sys/net/ipv4/ip_forward
-
-//IFCONFIG ETH0 UNUSED
+# Disable unused interface
 /sbin/ifconfig eth0 down
 
-//ETHERNET
-//ETH0 DROPPED
-//ETH1 (35) -> 38 (ETH1 R14)
-//ETH2 (36) -> 43 (ETH0 R16)
+# --- 2. ENABLE IP FORWARDING ---
+echo 1 > /proc/sys/net/ipv4/ip_forward
 
-//START ROUTING TABLE
-/sbin/route del default
+# --- 3. CLEAN EXISTING ROUTES ---
+/sbin/route del default 2>/dev/null
 
-//(R15)
-/sbin/route add -host 10.4.4.2 gw 10.4.1.2 dev eth1
+# --- 4. STATIC ROUTING TABLE ---
 
-//NETMASK ALL
+# Via Gateway 10.4.2.1 (R16 Appleby)
+# 10.4.3.0 Subnet (Between R16 and R15)
+/sbin/route add -net 10.4.3.0 netmask 255.255.255.0 gw 10.4.2.1 dev eth2
 
-// 10.1.x.0 Subnets
+# Via Gateway 10.4.1.2 (R14 Clarkson)
+# All other subnets reachable through R14
 /sbin/route add -net 10.1.1.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.1.2.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.1.3.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
@@ -32,30 +32,21 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 /sbin/route add -net 10.1.6.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.1.7.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 
-// 10.2.x.0 Subnets
 /sbin/route add -net 10.2.1.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.2.2.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.2.3.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.2.4.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 
-// 10.3.x.0 Subnets
 /sbin/route add -net 10.3.1.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.3.2.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.3.3.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.3.4.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 
-// 10.5.x.0 Subnets
+/sbin/route add -net 10.4.4.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
+
 /sbin/route add -net 10.5.1.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.5.2.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.5.3.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 /sbin/route add -net 10.5.4.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
 
-// 10.4.4.0 Subnet (Between R14 and R15)
-/sbin/route add -net 10.4.4.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
-
-// Internet Cloud
 /sbin/route add -net 192.168.98.0 netmask 255.255.255.0 gw 10.4.1.2 dev eth1
-
-// ROUTING VIA R16 (Gateway 10.4.2.1)
-// 10.4.3.0 Subnet (Between R16 and R15)
-/sbin/route add -net 10.4.3.0 netmask 255.255.255.0 gw 10.4.2.1 dev eth2
